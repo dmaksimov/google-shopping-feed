@@ -394,11 +394,21 @@ class Item
      *
      * @param string $name
      * @param string $value
+     * @param bool $multiple
      */
-    public function customWithNamespace($name, $value)
+    public function customWithNamespace($name, $value, $multiple = false)
     {
         $node = new Node($name);
-        $this->nodes[$name] = $node->value($value)->_namespace($this->namespace);
+        $nodeValue = $node->value($value)->_namespace($this->namespace);
+
+        if ($multiple) {
+            if (! isset($this->nodes[$name])) {
+                $this->nodes[$name] = [];
+            }
+            $this->nodes[$name][] = $nodeValue;
+        } else {
+            $this->nodes[$name] = $nodeValue;
+        }
     }
 
     /**
